@@ -1,13 +1,13 @@
 <?php
 
 /** 
- * @package  Directorist - TikTok Social Link
+ * @package  Directorist - Advanced Social Links
  */
 
 /**
- * Plugin Name:       Directorist - TikTok Social Link
+ * Plugin Name:       Directorist - Advanced Social Links
  * Plugin URI:        https://wpwax.com
- * Description:       TokTok social link for direcorist
+ * Description:       Advanced social links for direcorist plugins
  * Version:           1.0.0
  * Requires at least: 5.2
  * Author:            wpWax
