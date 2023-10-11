@@ -14,6 +14,8 @@ $social_items['meetup'] = 'Meetup.com';
 $social_items['discord'] = 'Discord';
 $social_items['telegram'] = 'Telegram';
 $social_items['tiktok'] = 'TikTok';
+$social_items['twitch'] = 'Twitch';
+$social_items['medium'] = 'Medium';
 //Remove an option
 //unset($social_items['flickr']);
 
