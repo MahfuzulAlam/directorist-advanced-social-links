@@ -16,6 +16,7 @@ $social_items['telegram'] = 'Telegram';
 $social_items['tiktok'] = 'TikTok';
 $social_items['twitch'] = 'Twitch';
 $social_items['medium'] = 'Medium';
+$social_items['whatsapp'] = 'WhatsApp';
 //Remove an option
 //unset($social_items['flickr']);
 
