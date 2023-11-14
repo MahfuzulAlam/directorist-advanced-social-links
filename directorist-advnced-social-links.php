@@ -1,13 +1,13 @@
 <?php
 
 /** 
- * @package  Directorist - TikTok Social Link
+ * @package  Directorist - Advanced Social Links
  */
 
 /**
- * Plugin Name:       Directorist - TikTok Social Link
+ * Plugin Name:       Directorist - Advanced Social Links
  * Plugin URI:        https://wpwax.com
- * Description:       TokTok social link for direcorist
+ * Description:       Advanced social links for direcorist plugins
  * Version:           1.0.0
  * Requires at least: 5.2
  * Author:            wpWax
@@ -27,9 +27,9 @@ if (!defined('ABSPATH')) {
     exit;                      // Exit if accessed
 }
 
-if (!class_exists('Directorist_TikTok_Social')) {
+if (!class_exists('Directorist_Advanced_Social')) {
 
-    final class Directorist_TikTok_Social
+    final class Directorist_Advanced_Social
     {
         /**
          * Instance
@@ -41,8 +41,8 @@ if (!class_exists('Directorist_TikTok_Social')) {
          */
         public static function instance()
         {
-            if (!isset(self::$instance) && !(self::$instance instanceof Directorist_TikTok_Social)) {
-                self::$instance = new Directorist_TikTok_Social;
+            if (!isset(self::$instance) && !(self::$instance instanceof Directorist_Advanced_Social)) {
+                self::$instance = new Directorist_Advanced_Social;
                 self::$instance->define_constant();
                 add_filter('directorist_template', array(self::$instance, 'directorist_template'), 10, 2);
             }
@@ -54,7 +54,7 @@ if (!class_exists('Directorist_TikTok_Social')) {
          */
         public function define_constant()
         {
-            define('TIKTOK_URI', plugin_dir_url(__FILE__));
+            define('ADVANCED_SOCIAL_URI', plugin_dir_url(__FILE__));
         }
 
         /**
@@ -87,7 +87,7 @@ if (!class_exists('Directorist_TikTok_Social')) {
             if (is_array($args)) {
                 extract($args);
             }
-            $data = $args;
+            //$data = $args;
 
             if (isset($args['form'])) $listing_form = $args['form'];
 
@@ -131,12 +131,12 @@ if (!class_exists('Directorist_TikTok_Social')) {
         }
     }
 
-    function Directorist_TikTok_Social()
+    function Directorist_Advanced_Social()
     {
-        return Directorist_TikTok_Social::instance();
+        return Directorist_Advanced_Social::instance();
     }
 
     if (directorist_is_plugin_active('directorist/directorist-base.php')) {
-        Directorist_TikTok_Social(); // get the plugin running
+        Directorist_Advanced_Social(); // get the plugin running
     }
 }

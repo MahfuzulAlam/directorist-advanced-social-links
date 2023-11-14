@@ -17,7 +17,7 @@ if (empty($socials)) {
 
 <div class="directorist-single-info directorist-single-info-socials">
 
-    <?php if ($data['label']) : ?>
+    <?php if (isset($data['label']) && !empty($data['label'])) : ?>
         <div class="directorist-single-info__label">
             <span class="directorist-single-info__label-icon"><?php directorist_icon($icon); ?></span>
             <span class="directorist-single-info__label--text"><?php echo esc_html($data['label']); ?></span>
@@ -29,7 +29,9 @@ if (empty($socials)) {
             <?php $icon = 'lab la-' . $social['id']; ?>
             <a target='_blank' href="<?php echo esc_url($social['url']); ?>" class="<?php echo esc_attr($social['id']); ?>">
                 <?php if ($social['id'] === 'tiktok') {
-                    echo '<img width="15" height="15" src="' . TIKTOK_URI . '/assets/icon/tiktok.png">';
+                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/tiktok.png">';
+                } else if ($social['id'] === 'twitter') {
+                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/twitter.svg">';
                 } else {
                     directorist_icon($icon);
                 } ?>
