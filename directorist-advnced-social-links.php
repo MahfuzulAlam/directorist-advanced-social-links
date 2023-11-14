@@ -54,7 +54,7 @@ if (!class_exists('Directorist_Advanced_Social')) {
          */
         public function define_constant()
         {
-            define('TIKTOK_URI', plugin_dir_url(__FILE__));
+            define('ADVANCED_SOCIAL_URI', plugin_dir_url(__FILE__));
         }
 
         /**
