@@ -32,6 +32,12 @@ if (empty($socials)) {
                     echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/tiktok.png">';
                 } else if ($social['id'] === 'twitter') {
                     echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/twitter.svg">';
+                } else if ($social['id'] === 'alignable') {
+                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/alignable.svg">';
+                } else if ($social['id'] === 'threads') {
+                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/threads.svg">';
+                } else if ($social['id'] === 'nextdoor') {
+                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/nextdoor.svg">';
                 } else {
                     directorist_icon($icon);
                 } ?>
