@@ -9,7 +9,7 @@
 if (!defined('ABSPATH')) exit;
 
 $social_items = ATBDP()->helper->social_links();
-//Add an option
+// Add an option
 $social_items['meetup'] = 'Meetup.com';
 $social_items['discord'] = 'Discord';
 $social_items['telegram'] = 'Telegram';
@@ -20,8 +20,9 @@ $social_items['whatsapp'] = 'WhatsApp';
 $social_items['alignable'] = 'Alignable';
 $social_items['threads'] = 'Threads';
 $social_items['nextdoor'] = 'Nextdoor';
-//Remove an option
-//unset($social_items['flickr']);
+$social_items['yelp'] = 'Yelp'; // Add Yelp option here
+// Remove an option
+// unset($social_items['flickr']);
 
 $id = (array_key_exists('id', $args)) ? $args['id'] : $index; ?>
 
