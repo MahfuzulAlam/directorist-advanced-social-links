@@ -20,7 +20,9 @@ $social_items['whatsapp'] = 'WhatsApp';
 $social_items['alignable'] = 'Alignable';
 $social_items['threads'] = 'Threads';
 $social_items['nextdoor'] = 'Nextdoor';
-$social_items['yelp'] = 'Yelp'; // Add Yelp option here
+$social_items['yelp'] = 'Yelp';
+$social_items['google'] = 'Google Review';
+$social_items['tripadvisor'] = 'Tripadvisor';
 // Remove an option
 // unset($social_items['flickr']);
 
