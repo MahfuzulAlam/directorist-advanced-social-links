@@ -27,20 +27,22 @@ if (empty($socials)) {
     <div class="directorist-social-links">
         <?php foreach ($socials as $social) : ?>
             <?php $icon = 'lab la-' . $social['id']; ?>
-            <a target='_blank' href="<?php echo esc_url($social['url']); ?>" class="<?php echo esc_attr($social['id']); ?>">
-                <?php if ($social['id'] === 'tiktok') {
-                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/tiktok.png">';
-                } else if ($social['id'] === 'twitter') {
-                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/twitter.svg">';
-                } else if ($social['id'] === 'alignable') {
-                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/alignable.svg">';
-                } else if ($social['id'] === 'threads') {
-                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/threads.svg">';
-                } else if ($social['id'] === 'nextdoor') {
-                    echo '<img width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/nextdoor.svg">';
-                } else {
-                    directorist_icon($icon);
-                } ?>
+            <a class="directorist-custom-social-link" target='_blank' href="<?php echo esc_url($social['url']); ?>" class="<?php echo esc_attr($social['id']); ?>">
+                <?php
+                    if ($social['id'] === 'tiktok') {
+                        echo '<img class="directorist-custom-social-icon" width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/tiktok.svg">';
+                    } else if ($social['id'] === 'alignable') {
+                        echo '<img class="directorist-custom-social-icon" width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/alignable.svg">';
+                    } else if ($social['id'] === 'threads') {
+                        echo '<img class="directorist-custom-social-icon" width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/threads.svg">';
+                    } else if ($social['id'] === 'nextdoor') {
+                        echo '<img class="directorist-custom-social-icon" width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/nextdoor.svg">';
+                    } else if ($social['id'] === 'bluesky') {
+                        echo '<img class="directorist-custom-social-icon" width="15" height="15" src="' . ADVANCED_SOCIAL_URI . '/assets/icon/bluesky.svg">';
+                    } else {
+                        directorist_icon($icon);
+                    }
+                ?>
             </a>
         <?php endforeach; ?>
     </div>

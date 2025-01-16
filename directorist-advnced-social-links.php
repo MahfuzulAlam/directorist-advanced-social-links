@@ -8,7 +8,7 @@
  * Plugin Name:       Directorist - Advanced Social Links
  * Plugin URI:        https://wpwax.com
  * Description:       Advanced social links for direcorist plugins
- * Version:           1.0.0
+ * Version:           2.0.0
  * Requires at least: 5.2
  * Author:            wpWax
  * Author URI:        https://wpwax.com
@@ -45,6 +45,7 @@ if (!class_exists('Directorist_Advanced_Social')) {
                 self::$instance = new Directorist_Advanced_Social;
                 self::$instance->define_constant();
                 add_filter('directorist_template', array(self::$instance, 'directorist_template'), 10, 2);
+                add_action( 'wp_head', array( self::$instance, 'custom_css' ));
             }
             return self::$instance;
         }
@@ -105,6 +106,23 @@ if (!class_exists('Directorist_Advanced_Social')) {
         {
             if ($this->template_exists($template)) $template = $this->get_template($template, $field_data);
             return $template;
+        }
+
+        /**
+         * Custom CSS
+         */
+        public function custom_css()
+        {
+            ?>
+            <style>
+                .directorist-custom-social-icon {
+                    filter: invert(23%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(25%) !important;
+                }
+                .directorist-custom-social-link:hover > .directorist-custom-social-icon {
+                    filter: unset !important;
+                }
+            </style>
+            <?php
         }
     }
 
