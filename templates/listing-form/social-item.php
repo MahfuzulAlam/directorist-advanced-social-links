@@ -8,24 +8,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-$social_items = ATBDP()->helper->social_links();
-// Add an option
-$social_items['meetup'] = 'Meetup.com';
-$social_items['discord'] = 'Discord';
-$social_items['telegram'] = 'Telegram';
-$social_items['tiktok'] = 'TikTok';
-$social_items['twitch'] = 'Twitch';
-$social_items['medium'] = 'Medium';
-$social_items['whatsapp'] = 'WhatsApp';
-$social_items['alignable'] = 'Alignable';
-$social_items['threads'] = 'Threads';
-$social_items['nextdoor'] = 'Nextdoor';
-$social_items['yelp'] = 'Yelp';
-$social_items['google'] = 'Google Review';
-$social_items['tripadvisor'] = 'Tripadvisor';   
-$social_items['bluesky'] = 'BlueSky';
-// Remove an option
-// unset($social_items['flickr']);
+$social_items = directorist_advanced_social_links_get_social_items();
 
 $id = (array_key_exists('id', $args)) ? $args['id'] : $index; ?>
 
