@@ -188,3 +188,92 @@ add_filter('atbdp_form_preset_widgets', function($widgets)
     return $widgets;
 });
 
+/**
+ * Brand color of all social icons in an array.
+ * @return array Associative array of social network IDs and their brand colors.
+ */
+function directorist_advanced_social_links_get_brand_color()
+{
+    $brand_colors = array(
+        'facebook'       => '#1877F2',
+        'twitter'        => '#000000',
+        'linkedin'       => '#0A66C2',
+        'pinterest'      => '#E60023',
+        'instagram'      => '#E1306C',
+        'tumblr'         => '#36465D',
+        'flickr'         => '#0063DC',
+        'snapchat'       => '#FFFC00',
+        'reddit'         => '#FF4500',
+        'youtube'        => '#FF0000',
+        'vimeo'          => '#1AB7EA',
+        'vine'           => '#00B488',
+        'github'         => '#181717',
+        'dribbble'       => '#EA4C89',
+        'behance'        => '#1769FF',
+        'soundcloud'     => '#FF5500',
+        'stack-overflow' => '#F48024',
+        'meetup'         => '#ED1C40',
+        'discord'        => '#5865F2',
+        'telegram'       => '#0088CC',
+        'tiktok'         => '#010101',
+        'twitch'         => '#9146FF',
+        'medium'         => '#12100E',
+        'whatsapp'       => '#25D366',
+        'alignable'      => '#663399',
+        'threads'        => '#000000',
+        'nextdoor'       => '#00B246',
+        'yelp'           => '#D32323',
+        'google'         => '#4285F4',
+        'tripadvisor'    => '#34E0A1',
+        'bluesky'        => '#1185FE',
+    );     
+    return apply_filters('directorist_advanced_social_links_brand_color', $brand_colors);
+}
+
+/**
+ * On single listing page, add a css class to the social link based on the brand color. on hover effect should be applied.
+ */
+add_action('wp_head', function() {
+    // Check if brand color hover effect is enabled.
+    if (!get_directorist_option('enable_brand_color_hover', false)) {
+        return;
+    }
+
+    if (!is_singular('at_biz_dir')) {
+        return;
+    }
+
+    $brand_colors = directorist_advanced_social_links_get_brand_color();
+    
+    if (empty($brand_colors) || !is_array($brand_colors)) {
+        return;
+    }
+
+    // Build CSS rules.
+    $css_rules = array();
+    foreach ($brand_colors as $social_id => $color) {
+        // Sanitize social ID and color.
+        $social_id = sanitize_key($social_id);
+        $color     = sanitize_hex_color($color);
+        
+        if (empty($color)) {
+            continue;
+        }
+        
+        $css_rules[] = sprintf(
+            '.directorist-custom-social-link.%s:hover { background-color: %s !important; }',
+            esc_attr($social_id),
+            esc_attr($color)
+        );
+    }
+
+    if (empty($css_rules)) {
+        return;
+    }
+
+    ?>
+    <style>
+        <?php echo implode("\n        ", $css_rules); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+    </style>
+    <?php
+});

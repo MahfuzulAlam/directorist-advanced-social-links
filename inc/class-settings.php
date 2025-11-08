@@ -54,7 +54,7 @@ if (!class_exists('Directorist_Advanced_Social_Settings')) {
                     'general_section' => array(
                         'title'       => __('Social Links Settings', 'directorist-advanced-social-links'),
                         'description' => __('Select which social networks should be available in the listing form.', 'directorist-advanced-social-links'),
-                        'fields'      => array('advanced_social_links_items'),
+                        'fields'      => array('enable_brand_color_hover', 'advanced_social_links_items'),
                     ),
                 )),
             );
@@ -106,6 +106,14 @@ if (!class_exists('Directorist_Advanced_Social_Settings')) {
             if (!is_array($saved_value)) {
                 $saved_value = $default_values;
             }
+
+            // Add toggle field for brand color hover effect.
+            $fields['enable_brand_color_hover'] = array(
+                'label'       => __('Enable Brand Color Hover Effect', 'directorist-advanced-social-links'),
+                'type'        => 'toggle',
+                'value'       => get_directorist_option('enable_brand_color_hover', false),
+                'description' => __('Enable hover background color effect using each social network\'s brand color.', 'directorist-advanced-social-links'),
+            );
 
             // Add the field.
             $fields['advanced_social_links_items'] = array(
