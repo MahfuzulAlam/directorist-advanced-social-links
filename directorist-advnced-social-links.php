@@ -54,6 +54,7 @@ if (!class_exists('Directorist_Advanced_Social')) {
                 self::$instance = new Directorist_Advanced_Social();
                 self::$instance->define_constant();
                 self::$instance->includes();
+                self::$instance->init_settings();
                 add_filter('directorist_template', array(self::$instance, 'directorist_template'), 10, 2);
                 add_action('wp_head', array(self::$instance, 'custom_css'));
             }
@@ -82,6 +83,23 @@ if (!class_exists('Directorist_Advanced_Social')) {
             $functions_file = $this->base_dir() . 'inc/functions.php';
             if (file_exists($functions_file)) {
                 require_once $functions_file;
+            }
+
+            $settings_file = $this->base_dir() . 'inc/class-settings.php';
+            if (file_exists($settings_file)) {
+                require_once $settings_file;
+            }
+        }
+
+        /**
+         * Initialize settings.
+         *
+         * @since 1.0.0
+         */
+        private function init_settings()
+        {
+            if (class_exists('Directorist_Advanced_Social_Settings')) {
+                new Directorist_Advanced_Social_Settings();
             }
         }
 
@@ -123,7 +141,6 @@ if (!class_exists('Directorist_Advanced_Social')) {
             if (is_array($args)) {
                 extract($args);
             }
-            //$data = $args;
 
             if (isset($args['form'])) $listing_form = $args['form'];
 

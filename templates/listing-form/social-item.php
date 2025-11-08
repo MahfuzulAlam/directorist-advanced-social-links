@@ -10,7 +10,9 @@ if (!defined('ABSPATH')) exit;
 
 $social_items = directorist_advanced_social_links_get_social_items();
 
-$id = (array_key_exists('id', $args)) ? $args['id'] : $index; ?>
+$id = (array_key_exists('id', $args)) ? $args['id'] : $index;
+
+?>
 
 <div class="directorist-form-social-fields" id="socialID-<?php echo esc_attr($id); ?>">
     <div class="directorist-form-group">

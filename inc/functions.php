@@ -14,14 +14,15 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Get available social link items.
+ * Get all available social link items (without filtering).
  *
  * Merges default Directorist social links with additional advanced social networks.
+ * This is the base function that returns all available social networks.
  *
  * @since 1.0.0
  * @return array Associative array of social network IDs and labels.
  */
-function directorist_advanced_social_links_get_social_items()
+function directorist_advanced_social_links_get_all_social_items()
 {
     $extras = array(
         'meetup'      => 'Meetup.com',
@@ -43,10 +44,55 @@ function directorist_advanced_social_links_get_social_items()
     // Get default social links from Directorist if available.
     $default_socials = array();
     if ( ATBDP()->helper->social_links() ) {
-        $default_socials = ATBDP()->helper->social_links();
+        $directorist_socials = ATBDP()->helper->social_links();
+        if (!empty($directorist_socials) && is_array($directorist_socials)) {
+            $default_socials = $directorist_socials;
+        }
     }
 
     $default_socials = array_merge($default_socials, $extras);
+
+    /**
+     * Filter all available advanced social link items (before settings filtering).
+     *
+     * @since 1.0.0
+     * @param array $default_socials The available social networks, id => label.
+     */
+    return apply_filters('directorist_advanced_social_links_all_items', $default_socials);
+}
+
+/**
+ * Get available social link items (with filtering based on settings).
+ *
+ * Merges default Directorist social links with additional advanced social networks
+ * and filters them based on saved settings.
+ *
+ * @since 1.0.0
+ * @return array Associative array of social network IDs and labels.
+ */
+function directorist_advanced_social_links_get_social_items()
+{
+    // Get all available social items first.
+    $default_socials = directorist_advanced_social_links_get_all_social_items();
+
+    // Filter social items based on saved settings.
+    $enabled_social_items = get_directorist_option('advanced_social_links_items', array());
+    
+
+    // If settings are configured, filter the social items.
+    if (!empty($enabled_social_items) && is_array($enabled_social_items)) {
+        $filtered_socials = array();
+        foreach ($enabled_social_items as $social_id) {
+            $social_id = sanitize_key($social_id);
+            if (isset($default_socials[$social_id])) {
+                $filtered_socials[$social_id] = $default_socials[$social_id];
+            }
+        }
+        // Only use filtered list if it's not empty, otherwise use all items.
+        if (!empty($filtered_socials)) {
+            $default_socials = $filtered_socials;
+        }
+    }
 
     /**
      * Filter the available advanced social link items.
@@ -127,3 +173,19 @@ function directorist_advanced_social_links_get_social_icon($social_id)
         }
     }
 }
+
+/**
+ * Filter to add description field to social info widget.
+ */
+add_filter('atbdp_form_preset_widgets', function($widgets)
+{
+    // Add description field.
+    $widgets['social_info']['options']['description'] = array(
+        'label'   => __('Instructions', 'directorist-advanced-social-links'),
+        'type'    => 'textarea',
+        'default' => '',
+    );
+
+    return $widgets;
+});
+
