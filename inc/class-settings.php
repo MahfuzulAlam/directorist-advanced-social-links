@@ -100,13 +100,7 @@ if (!class_exists('Directorist_Advanced_Social_Settings')) {
             $default_values = array_keys($social_items);
 
             // Get saved value or use defaults.
-            // Check if function exists for backward compatibility.
-            if (function_exists('get_directorist_option')) {
-                $saved_value = get_directorist_option('advanced_social_links_items', $default_values);
-            } else {
-                $options     = (array) get_option('atbdp_option', array());
-                $saved_value = isset($options['advanced_social_links_items']) ? $options['advanced_social_links_items'] : $default_values;
-            }
+            $saved_value = get_directorist_option('advanced_social_links_items', $default_values);
 
             // Ensure saved value is an array.
             if (!is_array($saved_value)) {

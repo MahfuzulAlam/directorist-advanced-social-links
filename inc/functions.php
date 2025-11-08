@@ -77,7 +77,6 @@ function directorist_advanced_social_links_get_social_items()
 
     // Filter social items based on saved settings.
     $enabled_social_items = get_directorist_option('advanced_social_links_items', array());
-    
 
     // If settings are configured, filter the social items.
     if (!empty($enabled_social_items) && is_array($enabled_social_items)) {
