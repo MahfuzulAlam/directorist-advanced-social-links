@@ -3,7 +3,7 @@
  * Plugin Name:       Directorist - Advanced Social Links
  * Plugin URI:        https://wpxplore.com/tools/directorist-advanced-social-links
  * Description:       Advanced social links for Directorist plugins
- * Version:           2.0.0
+ * Version:           2.1.0
  * Requires at least: 5.2
  * Author:            wpXplore
  * Author URI:        https://wpxplore.com
@@ -156,7 +156,11 @@ if (!class_exists('Directorist_Advanced_Social')) {
          */
         public function directorist_template($template, $field_data)
         {
-            if ($this->template_exists($template)) $template = $this->get_template($template, $field_data);
+            if ($this->template_exists($template)) {
+                do_action('before_directorist_template_loaded', $template);
+                $this->get_template($template, $field_data);
+                return '';
+            }
             return $template;
         }
 

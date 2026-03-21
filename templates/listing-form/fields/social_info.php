@@ -9,11 +9,15 @@ use \Directorist\Helper;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+$listing_form = $data['form'];
+
+// Get conditional logic attributes using centralized method
+$conditional_logic_attr = $listing_form->get_conditional_logic_attributes( $data );
 ?>
 
-<div class="directorist-form-group directorist-form-social-info-field">
+<div class="directorist-form-group directorist-form-social-info-field"<?php echo $conditional_logic_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped in get_conditional_logic_attributes() ?>>
 
-    <?php \Directorist\Directorist_Listing_Form::instance()->field_label_template( $data );?>
+    <?php $listing_form->field_label_template( $data );?>
 
     <div id="social_info_sortable_container">
 
@@ -22,8 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
         <?php
         if ( ! empty( $data['value'] ) ) {
             foreach ( $data['value'] as $index => $social_info ) {
-                if( isset( $data['social_items'] ) ) $social_info['social_items'] = $data['social_items'];
-                \Directorist\Directorist_Listing_Form::instance()->social_item_template( $index, $social_info );
+                $listing_form->social_item_template( $index, $social_info );
             }
         }
         ?>
@@ -32,6 +35,4 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
     <button type="button" class="directorist-btn directorist-btn-light" id="addNewSocial"><?php directorist_icon( 'las la-plus' ); ?><?php esc_html_e( 'Add Social', 'directorist' ); ?></button>
 
-    <?php \Directorist\Directorist_Listing_Form::instance()->field_description_template( $data ); ?>
-    
 </div>
