@@ -1,246 +1,89 @@
 <?php
 /**
- * Plugin Name:       Directorist - Advanced Social Links
- * Plugin URI:        https://wpxplore.com/tools/directorist-advanced-social-links
- * Description:       Advanced social links for Directorist plugins
- * Version:           2.1.0
- * Requires at least: 5.2
+ * Plugin Name:       Advanced Social Links for Directorist
+ * Plugin URI:        https://github.com/MahfuzulAlam/directorist-advanced-social-links
+ * Description:       Adds more social networks, custom icons, and display controls to Directorist listings.
+ * Version:           2.2.0
+ * Requires at least: 6.5
+ * Requires PHP:      7.4
+ * Requires Plugins:  directorist
  * Author:            wpXplore
  * Author URI:        https://wpxplore.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       directorist-advanced-social-links
+ * Text Domain:       advanced-social-links-for-directorist
  * Domain Path:       /languages
  *
  * @package Directorist_Advanced_Social_Links
  */
 
-/**
- * This is an extension for Directorist plugin.
- * It helps using custom code and template overriding of Directorist plugin.
- */
+defined( 'ABSPATH' ) || exit;
+
+define( 'DIRECTORIST_ADVANCED_SOCIAL_VERSION', '2.2.0' );
+define( 'DIRECTORIST_ADVANCED_SOCIAL_PATH', plugin_dir_path( __FILE__ ) );
+define( 'DIRECTORIST_ADVANCED_SOCIAL_URI', plugin_dir_url( __FILE__ ) );
+
+require_once DIRECTORIST_ADVANCED_SOCIAL_PATH . 'inc/functions.php';
+require_once DIRECTORIST_ADVANCED_SOCIAL_PATH . 'inc/class-directorist-advanced-social-settings.php';
+require_once DIRECTORIST_ADVANCED_SOCIAL_PATH . 'inc/class-directorist-advanced-social.php';
 
 /**
- * If this file is called directly, abort.
+ * Get the main plugin instance.
+ *
+ * @since 2.2.0
+ * @return Directorist_Advanced_Social
  */
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+function directorist_advanced_social_links() {
+	return Directorist_Advanced_Social::instance();
 }
 
-if (!class_exists('Directorist_Advanced_Social')) {
+/**
+ * Backward-compatible instance accessor.
+ *
+ * @since 1.0.0
+ * @deprecated 2.2.0 Use directorist_advanced_social_links().
+ * @return Directorist_Advanced_Social
+ */
+function Directorist_Advanced_Social() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+	return directorist_advanced_social_links();
+}
 
-    /**
-     * Main plugin class for Directorist Advanced Social Links.
-     *
-     * @since 1.0.0
-     */
-    final class Directorist_Advanced_Social
-    {
-        /**
-         * Plugin instance.
-         *
-         * @var Directorist_Advanced_Social
-         */
-        private static $instance;
+/**
+ * Initialize after all active plugins are loaded.
+ *
+ * @return void
+ */
+function directorist_advanced_social_links_bootstrap() {
+	if ( ! function_exists( 'ATBDP' ) ) {
+		add_action( 'admin_notices', 'directorist_advanced_social_links_dependency_notice' );
+		return;
+	}
 
-        /**
-         * Get the singleton instance of the plugin.
-         *
-         * @return Directorist_Advanced_Social Plugin instance.
-         */
-        public static function instance()
-        {
-            if (!isset(self::$instance) && !(self::$instance instanceof Directorist_Advanced_Social)) {
-                self::$instance = new Directorist_Advanced_Social();
-                self::$instance->define_constant();
-                self::$instance->includes();
-                self::$instance->init_settings();
-                add_filter('directorist_template', array(self::$instance, 'directorist_template'), 10, 2);
-                add_action('wp_head', array(self::$instance, 'custom_css'));
-            }
-            return self::$instance;
-        }
+	directorist_advanced_social_links();
+}
+add_action( 'plugins_loaded', 'directorist_advanced_social_links_bootstrap', 20 );
 
-        /**
-         * Define plugin constants.
-         *
-         * @since 1.0.0
-         */
-        public function define_constant()
-        {
-            if (!defined('DIRECTORIST_ADVANCED_SOCIAL_URI')) {
-                define('DIRECTORIST_ADVANCED_SOCIAL_URI', plugin_dir_url(__FILE__));
-            }
-        }
+/**
+ * Show a fallback dependency notice on WordPress versions that do not enforce
+ * the Requires Plugins header.
+ *
+ * @return void
+ */
+function directorist_advanced_social_links_dependency_notice() {
+	if ( ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
 
-        /**
-         * Include required files.
-         *
-         * @since 1.0.0
-         */
-        private function includes()
-        {
-            $functions_file = $this->base_dir() . 'inc/functions.php';
-            if (file_exists($functions_file)) {
-                require_once $functions_file;
-            }
-
-            $settings_file = $this->base_dir() . 'inc/class-settings.php';
-            if (file_exists($settings_file)) {
-                require_once $settings_file;
-            }
-        }
-
-        /**
-         * Initialize settings.
-         *
-         * @since 1.0.0
-         */
-        private function init_settings()
-        {
-            if (class_exists('Directorist_Advanced_Social_Settings')) {
-                new Directorist_Advanced_Social_Settings();
-            }
-        }
-
-        /**
-         * Get the base directory path of the plugin.
-         *
-         * @return string Plugin directory path.
-         */
-        public function base_dir()
-        {
-            return plugin_dir_path(__FILE__);
-        }
-
-        /**
-         * Check if a template file exists.
-         *
-         * @param string $template_file Template file name (without .php extension).
-         * @return bool True if template exists, false otherwise.
-         */
-        /**
-         * Template Exists
-         */
-        public function template_exists($template_file)
-        {
-            $file = $this->base_dir() . '/templates/' . $template_file . '.php';
-
-            if (file_exists($file)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Get Template
-         */
-        public function get_template($template_file, $args = array())
-        {
-            if (is_array($args)) {
-                extract($args);
-            }
-
-            if (isset($args['form'])) $listing_form = $args['form'];
-
-            $file = $this->base_dir() . '/templates/' . $template_file . '.php';
-
-            if ($this->template_exists($template_file)) {
-                include $file;
-            }
-        }
-
-        /**
-         * Directorist Template
-         */
-        public function directorist_template($template, $field_data)
-        {
-            if ($this->template_exists($template)) {
-                do_action('before_directorist_template_loaded', $template);
-                $this->get_template($template, $field_data);
-                return '';
-            }
-            return $template;
-        }
-
-        /**
-         * Output custom CSS for social icons on single listing pages.
-         *
-         * @since 1.0.0
-         */
-        public function custom_css()
-        {
-            if (is_singular('at_biz_dir')) {
-                ?>
-                <style>
-                    .directorist-custom-social-icon {
-                        filter: invert(23%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(25%) !important;
-                    }
-                    .directorist-custom-social-link:hover > .directorist-custom-social-icon {
-                        filter: unset !important;
-                    }
-                </style>
-                <?php
-            }
-        }
-    }
-
-    /**
-     * Check if a plugin is active.
-     *
-     * @param string $plugin Plugin basename (e.g., 'plugin-folder/plugin-file.php').
-     * @return bool True if plugin is active, false otherwise.
-     */
-    if (!function_exists('directorist_is_plugin_active')) {
-        function directorist_is_plugin_active($plugin)
-        {
-            if (empty($plugin) || !is_string($plugin)) {
-                return false;
-            }
-
-            return in_array($plugin, (array) get_option('active_plugins', array()), true) || directorist_is_plugin_active_for_network($plugin);
-        }
-    }
-
-    /**
-     * Check if a plugin is active for the entire network (multisite).
-     *
-     * @param string $plugin Plugin basename (e.g., 'plugin-folder/plugin-file.php').
-     * @return bool True if plugin is network active, false otherwise.
-     */
-    if (!function_exists('directorist_is_plugin_active_for_network')) {
-        function directorist_is_plugin_active_for_network($plugin)
-        {
-            if (empty($plugin) || !is_string($plugin)) {
-                return false;
-            }
-
-            if (!is_multisite()) {
-                return false;
-            }
-
-            $plugins = get_site_option('active_sitewide_plugins', array());
-            if (isset($plugins[$plugin])) {
-                return true;
-            }
-
-            return false;
-        }
-    }
-
-    /**
-     * Get the main plugin instance.
-     *
-     * @return Directorist_Advanced_Social Plugin instance.
-     */
-    function Directorist_Advanced_Social()
-    {
-        return Directorist_Advanced_Social::instance();
-    }
-
-    // Initialize the plugin if Directorist is active.
-    if (directorist_is_plugin_active('directorist/directorist-base.php')) {
-        Directorist_Advanced_Social();
-    }
+	?>
+	<div class="notice notice-error">
+		<p>
+			<?php
+			esc_html_e(
+				'Advanced Social Links for Directorist requires the Directorist plugin to be installed and active.',
+				'advanced-social-links-for-directorist'
+			);
+			?>
+		</p>
+	</div>
+	<?php
 }
