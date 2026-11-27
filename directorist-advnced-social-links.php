@@ -157,7 +157,8 @@ if (!class_exists('Directorist_Advanced_Social')) {
         public function directorist_template($template, $field_data)
         {
             if ($this->template_exists($template)) {
-                do_action('before_directorist_template_loaded', $template);
+                $file = $this->base_dir() . '/templates/' . $template . '.php';
+                do_action('before_directorist_template_loaded', $template, $file, $field_data);
                 $this->get_template($template, $field_data);
                 return '';
             }
